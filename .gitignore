@@ -1,0 +1,7 @@
+*.mp4
+*.csv
+*.png
+*.txt
+cookie
+__pycache__/
+venv/
