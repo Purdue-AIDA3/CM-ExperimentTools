@@ -1,23 +1,26 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QWidget, QFileDialog, QMessageBox, QSizePolicy, QGraphicsView, QStackedLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QFileDialog, QMessageBox, QSizePolicy, QGraphicsView, QStackedLayout
 from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PyQt6.QtMultimediaWidgets import QVideoWidget
-from PyQt6.QtCore import Qt, QUrl, QFile, QIODeviceBase, QTimer
+from PyQt6.QtCore import Qt, QUrl, QTimer
 from PyQt6.QtGui import QFont, QPixmap
 import time
-from .Task1Clicks import Task1Clicks
+from pathlib import Path
+from .Task1Clicks import Task1Clicks  # Default clicks class
 from Controllers import Task1Controller
 import datetime
+
 class Task1(QWidget):
 
-    def __init__(self, file_name, parent=None, audio_files=None):
+    def __init__(self, file_name, parent=None, audio_files=None, clicks_class=Task1Clicks):
         super().__init__(parent)
         self.setWindowTitle("Task 1")
         self.file_name = file_name
         self.audio_files = audio_files
         self.current_audio_file = 0
-        if audio_files != None:
-            file_name += "_secondary"
+        self.clicks_class = clicks_class  # Store the clicks class as an instance variable
+        #if audio_files is not None:
+        #    file_name += "_secondary"
         self.controller = Task1Controller(file_name)
         self.init_ui()
 
@@ -35,8 +38,9 @@ class Task1(QWidget):
 
         controlLayout.addWidget(self.playbutton)
         controlLayout.addWidget(self.nextButton)
-        self.media_player.setSource(QUrl.fromLocalFile(f"Resources\Task_1\{self.file_name}.mp4"))
-        if self.audio_files != None:
+        self.media_player.setSource(QUrl.fromLocalFile(f"Resources/Task_1/{self.file_name}.mp4"))
+        
+        if self.audio_files is not None:
             self.timer = QTimer(self)
             self.audio_output = QAudioOutput()
             self.audio_player = QMediaPlayer()
@@ -49,7 +53,6 @@ class Task1(QWidget):
         self.layout.addLayout(controlLayout)
 
         self.setLayout(self.layout)
-
         self.media_player.setVideoOutput(self.videoWidget)
 
     def play_video(self):
@@ -58,8 +61,8 @@ class Task1(QWidget):
         self.playbutton.setEnabled(False)
         self.media_player.playbackStateChanged.connect(self.playback_state_changed)
         self.media_player.positionChanged.connect(self.position_changed)
-        if self.audio_files != None:
-            self.timer.start(2000) 
+        if self.audio_files is not None:
+            self.timer.start(2000)
 
     def play_audio(self):
         if self.current_audio_file == len(self.audio_files):
@@ -69,20 +72,19 @@ class Task1(QWidget):
         self.current_audio_file += 1
         self.timer.start(3000)
 
-    def playback_state_changed(self,state):
-        if state == QMediaPlayer.PlaybackState.PausedState or state == QMediaPlayer.PlaybackState.StoppedState:
+    def playback_state_changed(self, state):
+        if state in {QMediaPlayer.PlaybackState.PausedState, QMediaPlayer.PlaybackState.StoppedState}:
             self.nextButton.setEnabled(True)
             self.controller.add_end_time()
             self.next_page()
     
-    def position_changed(self,position):
+    def position_changed(self, position):
         if position >= self.media_player.duration() - 60:
             self.media_player.pause()
 
     def next_page(self):
-        pixmap = QPixmap(f"Resources\Task_1\Images\{self.file_name}.png")
+        pixmap = QPixmap(f"Resources/Task_1/Images/{self.file_name}.png")
         def __thunk(parent):
-            return Task1Clicks(self.file_name, self.videoWidget.width(), self.videoWidget.height(), self.controller, pixmap, parent)
+            # Use the provided clicks_class (either Task1Clicks or Task1ClicksTimer)
+            return self.clicks_class(self.file_name, self.videoWidget.width(), self.videoWidget.height(), self.controller, pixmap, parent)
         self.parent().insert_widget((f"Task 1 Clicks for {self.file_name}", __thunk))
-
-
