@@ -32,7 +32,7 @@ def get_points_from_dict(points_dict):
 def find_sum_of_errors(gt_comb, exp_comb):
     """
     Function to find sum of errors. 
-    Uses l2 norm to ind errors and then adds them up
+    Uses l2 norm to find errors and then adds them up
 
     Parameters
     ----------
@@ -48,9 +48,12 @@ def find_sum_of_errors(gt_comb, exp_comb):
     numpy array
         l2 norms between ground truth data and subject data
     """
-    # return sum([math.sqrt((gt_comb[i][0] - exp_comb[i][0]) ** 2 + (gt_comb[i][1] - exp_comb[i][1]) ** 2) for i in range(len(gt_comb))])
+    # Replace invalid guesses (0, 0) with the ground truth positions to simulate maximum error
+    invalid_guesses = (exp_comb == 0).all(axis=1)
+    exp_comb[invalid_guesses] = gt_comb[invalid_guesses]
+
     l2_norm = np.linalg.norm(gt_comb - exp_comb, axis=1)
-    return (sum(l2_norm), l2_norm)
+    return sum(l2_norm), l2_norm
 
 def find_raw_arctan2_angles(first, second):
     """

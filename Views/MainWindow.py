@@ -61,7 +61,7 @@ class MainWindow(QStackedWidget, QMainWindow):
             ]
 
         # Secondary tasks for Set 2
-        #self.windows_list.append(("Secondary Task Instruction", self.get_video_player("Secondary Task Instructions", "./Resources/Secondary_Task_Training.mp4")))
+        self.windows_list.append(("Secondary Task Instruction", self.get_video_player("Secondary Task Instructions", "./Resources/Secondary_Task_Training.mp4")))
 
         # Load secondary task audio files
         task_1_audio_files = []
@@ -103,7 +103,7 @@ class MainWindow(QStackedWidget, QMainWindow):
             self.windows_list += [
                 (f"Task 1 Video for {task_id} with secondary task", self.get_task1_secondary_with_timer(task_id, [task_1_audio_files_2[k], task_1_audio_files_2[k + 1]])),
                 (f"Plot Display for {task_id}", self.get_plot_display(task_id)),
-                (f"NASA TLX for {task_id} with secondary task", self.get_survey("SV_bIxjGoogEz3eEqG", metadata={"taskid": f"{task_id}"}))
+                #(f"NASA TLX for {task_id} with secondary task", self.get_survey("SV_bIxjGoogEz3eEqG", metadata={"taskid": f"{task_id}"}))
             ]
             k += 2
 
