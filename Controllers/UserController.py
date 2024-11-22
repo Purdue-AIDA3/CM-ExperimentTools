@@ -27,6 +27,8 @@ class UserController(object):
             Path(current_user.data_path).mkdir(parents=True)
             Path(current_user.clicks_path).mkdir()
             Path(f"{current_user.data_path}\\EEG_data").mkdir()
+            Path(f"{current_user.data_path}\\GSR_data").mkdir()
+            Path(f"{current_user.data_path}\\Cognitive_tasks").mkdir()
             Path(f"{current_user.data_path}\\eye_tracker_data").mkdir()
             Path(f"{current_user.data_path}\\videos").mkdir()
             return True, current_user.uid
