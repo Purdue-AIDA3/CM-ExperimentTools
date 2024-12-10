@@ -31,3 +31,10 @@ To run the code
 ```
 python main.py
 ```
+
+## PyQT Workaround
+If running program on campus and you receive an error message regarding the web server, run:
+```
+QTWEBENGINE_DISABLE_SANDBOX=1
+```
+before initiating main.py
