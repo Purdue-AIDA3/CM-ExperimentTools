@@ -18,24 +18,30 @@ from .Break import Break
 from .Thanks import Thanks
 from Controllers.User import current_user
 from .PlotDisplay import PlotDisplay
+from .HtmlViewer import HtmlViewer
 
 class MainWindow(QStackedWidget, QMainWindow):
     def __init__(self, controller, parent=None):
         super().__init__(parent)
         self.controller = controller
 
+
         # Initialize windows list with initial screens
         self.windows_list = [
             ("Login screen", Login),
             ("Intake Survey", self.get_survey("SV_cZqUPwWNFmWZczk")),
             ("Welcome Screen", Welcome),
+            ("Fitts Law Task", self.get_html_viewer("Resources/FittsLaw.html", "showdata")),
+            ("Mental Rotation Task", self.get_html_viewer("Resources/MentalRotation.html", "showdata")),
+            ("N-Back Task", self.get_html_viewer("Resources/NBackTask.html", "showdata")),
+            ("Visual Search Task", self.get_html_viewer("Resources/VisualSearch.html", "showdata")),
             ("Task 1 Instructions", self.get_video_player("Task 1 Instructions", "./Resources/Task_1_Training.mp4"))
         ]
 
         # Load and shuffle Task 1 videos
         task1_names = glob.glob("Resources/Task_1/*.mp4")
         random.shuffle(task1_names)
-
+        i = 0
         # Add tasks and PlotDisplay for each video in Set 1
         for i in range(10):
             name = task1_names[i]
@@ -61,7 +67,7 @@ class MainWindow(QStackedWidget, QMainWindow):
             ]
 
         # Secondary tasks for Set 2
-        self.windows_list.append(("Secondary Task Instruction", self.get_video_player("Secondary Task Instructions", "./Resources/Secondary_Task_Training.mp4")))
+        #self.windows_list.append(("Secondary Task Instruction", self.get_video_player("Secondary Task Instructions", "./Resources/Secondary_Task_Training.mp4")))
 
         # Load secondary task audio files
         task_1_audio_files = []
@@ -131,6 +137,15 @@ class MainWindow(QStackedWidget, QMainWindow):
     def get_instructions(self, instructions, image=None):
         def __thunk(parent):
             return Instructions(instructions, parent, image)
+        return __thunk
+    
+    def get_html_viewer(self, html_file, div_id):
+        def __thunk(parent):
+            # Safeguard: Check if data_path is initialized
+            if not current_user.data_path:
+                raise ValueError("User data path is not initialized. Ensure login is completed.")
+            save_path = Path(current_user.data_path) / "html_tasks"
+            return HtmlViewer(html_file, save_path, div_id, parent)
         return __thunk
 
     def get_task1_secondary(self, file, audio_files):

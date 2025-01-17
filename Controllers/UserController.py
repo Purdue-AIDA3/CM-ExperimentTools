@@ -4,7 +4,8 @@ from pathlib import Path
 import csv
 from random import randint
 import os
-DATA_PATH = "\\\\datadepot.rcac.purdue.edu\\depot\\sbrunswi\\data"
+#DATA_PATH = "\\\\datadepot.rcac.purdue.edu\\depot\\sbrunswi\\data"
+DATA_PATH = "C:\\Users\\jimmy\\Desktop\\Windracers---Efficient-and-safe-HAT-main\\TestDataStorage"
 class UserController(object):
     def login(self):
         # with open(f"{DATA_PATH}\\credentials.csv", 'r') as file:
@@ -31,6 +32,7 @@ class UserController(object):
             Path(f"{current_user.data_path}\\Cognitive_tasks").mkdir()
             Path(f"{current_user.data_path}\\eye_tracker_data").mkdir()
             Path(f"{current_user.data_path}\\videos").mkdir()
+            Path(f"{current_user.data_path}\\html_tasks").mkdir()
             return True, current_user.uid
         except Exception as e:
             return False, str(e)
