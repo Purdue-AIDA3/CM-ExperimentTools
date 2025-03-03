@@ -1,0 +1,22 @@
+Sub RemoveRowsWithSpaces()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+    Dim lastRow As Long
+    Dim rowsDeleted As Boolean
+    
+    Set ws = ThisWorkbook.Sheets("blinks") ' Change to your sheet name
+    
+    Do
+        rowsDeleted = False
+        lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row ' Change "A" to your ID column
+        
+        For Each cell In ws.Range("A1:A" & lastRow) ' Change "A" to your ID column
+            If InStr(cell.Value, " ") > 0 Then
+                cell.EntireRow.Delete
+                rowsDeleted = True
+                Exit For
+            End If
+        Next cell
+    Loop While rowsDeleted
+End Sub
