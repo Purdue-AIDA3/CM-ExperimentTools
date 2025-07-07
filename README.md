@@ -19,7 +19,7 @@ pip install -r requirements.txt
 
 ## Resources
 
-Download the folder `Resources` from https://drive.google.com/drive/folders/1G3pT8fv4KmhhZXY0tgO4xr44FaRe3rNS and add it under the project.
+Download the folder `Resources` from https://drive.google.com/drive/folders/1G3pT8fv4KmhhZXY0tgO4xr44FaRe3rNS?usp=sharing and add it under the project.
 
 ## Login Cookies
 
