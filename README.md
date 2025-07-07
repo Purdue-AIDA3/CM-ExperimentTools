@@ -23,7 +23,8 @@ Download the folder `Resources` from https://drive.google.com/drive/folders/1G3p
 
 ## Login Cookies
 
-To automatically login to https://cloud.distributed-avionics.com/, create a file named `cookie` inside `Resources` folder. Get the value of the cookie `.DA-CC-Identity` from a logged in session from your browser and paste it into the file `cookie`.
+To log in to the ground control system in Task 2, username and password are required, which are not publicly available as it is proprietary software owned by Windracers Limited. 
+<!-- To automatically login to https://cloud.distributed-avionics.com/, create a file named `cookie` inside `Resources` folder. Get the value of the cookie `.DA-CC-Identity` from a logged in session from your browser and paste it into the file `cookie`. -->
 
 ## Usage
 
